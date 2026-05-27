@@ -1,1 +1,0 @@
--- Create loyalty tables for customer loyalty programs 

@@ -1,1 +1,0 @@
--- Create challenges table for staff challenges and competitions 

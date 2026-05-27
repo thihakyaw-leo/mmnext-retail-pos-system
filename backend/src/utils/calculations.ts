@@ -1,0 +1,2 @@
+﻿// @ts-nocheck
+// Calculations utility - Business calculations for POS operations 

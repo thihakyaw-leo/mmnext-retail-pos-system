@@ -1,1 +1,0 @@
-// Encryption utility - Data encryption and hashing functions 

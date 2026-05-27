@@ -1,19 +1,37 @@
-﻿{
-    "version":  "1.0.0",
-    "name":  "cloudflare-enterprise-pos-backend",
-    "description":  "Enterprise POS API on Cloudflare Workers",
-    "scripts":  {
-                    "start":  "wrangler dev",
-                    "dev":  "wrangler dev",
-                    "deploy":  "wrangler deploy"
-                },
-    "dependencies":  {
-                         "@cloudflare/workers-types":  "^4.20250523.0",
-                         "hono":  "^4.0.0"
-                     },
-    "devDependencies":  {
-                            "typescript":  "^5.3.0",
-                            "wrangler":  "^3.45.0"
-                        },
-    "main":  "src/index.js"
+{
+    "version": "1.0.0",
+    "name": "mmnext-enterprise-pos-backend",
+    "description": "Enterprise POS API on Cloudflare Workers",
+    "engines": {
+        "node": ">=22.0.0"
+    },
+    "main": "src/index.ts",
+    "scripts": {
+        "start": "wrangler dev",
+        "dev": "wrangler dev",
+        "build": "tsc --noEmit",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest",
+        "test:ci": "vitest run",
+        "deploy": "wrangler deploy",
+        "migration": "wrangler d1 migrations apply DB --local",
+        "migration:remote": "wrangler d1 migrations apply DB --remote",
+        "seed": "wrangler d1 execute DB --local --file=./migrations/0017_seed_initial_data.sql"
+    },
+    "dependencies": {
+        "@cloudflare/workers-types": "latest",
+        "@google/genai": "^2.6.0",
+        "@hono/zod-validator": "^0.8.0",
+        "@tsndr/cloudflare-worker-jwt": "^3.2.1",
+        "@types/jsonwebtoken": "^9.0.10",
+        "hono": "latest",
+        "jsonwebtoken": "^9.0.3",
+        "zod": "^4.4.3"
+    },
+    "devDependencies": {
+        "@cloudflare/vitest-pool-workers": "^0.16.10",
+        "typescript": "latest",
+        "vitest": "^4.1.7",
+        "wrangler": "latest"
+    }
 }

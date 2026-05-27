@@ -1,1 +1,0 @@
-// POS controller - Point of sale terminal operations 

@@ -1,1 +1,0 @@
-// Connection manager - WebSocket connection lifecycle management 

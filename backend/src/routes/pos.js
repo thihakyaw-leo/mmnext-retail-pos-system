@@ -1,1 +1,0 @@
-// POS terminal routes - Point of sale operations 

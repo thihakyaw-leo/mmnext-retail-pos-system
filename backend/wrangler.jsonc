@@ -1,0 +1,100 @@
+{
+  "name": "mmnext-enterprise-pos-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-01-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "pages_build_output_dir": "../frontend/dist",
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "ENVIRONMENT": "development"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mmnext-enterprise-pos-db",
+      "database_id": "f1f0b902-8c52-4109-ac91-fc9e4a53e6d9",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "65dc72ddf2fe4c94a995c56cbc258abf"
+    },
+    {
+      "binding": "CACHE",
+      "id": "e85b649d57c2403ea01c34bd341eb66a"
+    },
+    {
+      "binding": "SESSIONS",
+      "id": "95cfc1a58b694ca0bef1a35726a8d595"
+    },
+    {
+      "binding": "SETTINGS",
+      "id": "e88d1526108a47529f8aa55fef179fa4"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "R2",
+      "bucket_name": "mmnext-enterprise-pos-storage"
+    }
+  ],
+  "env": {
+    "production": {
+      "name": "mmnext-enterprise-pos-api-prod",
+      "vars": {
+        "ENVIRONMENT": "production"
+      }
+    }
+  },
+  "triggers": {
+    "crons": [
+      "0 1 * * *",
+      "0 * * * *",
+      "0 9 * * 1"
+    ]
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "POS_DO",
+        "class_name": "PosDurableObject"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "PosDurableObject"
+      ]
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "queue": "mmnext-enterprise-pos-email-queue",
+        "binding": "EMAIL_QUEUE"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "mmnext-enterprise-pos-email-queue",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 3
+      }
+    ]
+  },
+  "analytics_engine_datasets": [
+    {
+      "binding": "POS_EVENTS",
+      "dataset": "mmnext_pos_events"
+    }
+  ]
+}

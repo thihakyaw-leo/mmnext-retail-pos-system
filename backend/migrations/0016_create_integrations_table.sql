@@ -1,1 +1,0 @@
--- Create integrations table for third-party API connections 
