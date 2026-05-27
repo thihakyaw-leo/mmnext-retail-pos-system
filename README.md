@@ -1,4 +1,4 @@
-# 🚀 Cloudflare Enterprise POS
+# 🚀 MMNext Enterprise POS
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 
 **100% FREE enterprise-grade Point of Sale system built entirely on Cloudflare's edge platform with AI-powered features**
 
-[🌟 Demo](https://pos-demo.pages.dev) | [📖 Documentation](./docs/) | [🐛 Issues](https://github.com/namhbcf1/cloudflare-enterprise-pos/issues) | [💬 Discussions](https://github.com/namhbcf1/cloudflare-enterprise-pos/discussions)
+[🌟 Demo](https://pos-demo.pages.dev) | [📖 Documentation](./docs/) | [🐛 Issues](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/issues) | [💬 Discussions](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions)
 
 </div>
 
@@ -121,8 +121,8 @@ graph TB
 
 ```bash
 # Clone and setup everything
-git clone https://github.com/namhbcf1/cloudflare-enterprise-pos.git
-cd cloudflare-enterprise-pos
+git clone https://github.com/thihakyaw-leo/mmnext-enterprise-pos.git
+cd mmnext-enterprise-pos
 chmod +x scripts/setup.sh && ./scripts/setup.sh
 ```
 
@@ -179,7 +179,7 @@ npm run dev
 ## 📁 **Project Structure**
 
 ```
-cloudflare-enterprise-pos/
+mmnext-enterprise-pos/
 ├── 📱 frontend/                 # React PWA
 │   ├── src/
 │   │   ├── auth/               # Authentication system
@@ -386,9 +386,9 @@ npm run format      # Format all files
 ## 💬 **Community & Support**
 
 ### **🆘 Get Help**
-- 🐛 [Report bugs](https://github.com/namhbcf1/cloudflare-enterprise-pos/issues)
-- 💡 [Feature requests](https://github.com/namhbcf1/cloudflare-enterprise-pos/discussions)
-- ❓ [Ask questions](https://github.com/namhbcf1/cloudflare-enterprise-pos/discussions/categories/q-a)
+- 🐛 [Report bugs](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/issues)
+- 💡 [Feature requests](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions)
+- ❓ [Ask questions](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions/categories/q-a)
 - 📧 Email: [support@yourcompany.com](mailto:support@yourcompany.com)
 
 ### **🌟 Show Your Support**
@@ -432,10 +432,13 @@ This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE
 [![React](https://img.shields.io/badge/Built%20with-React-blue?style=flat-square)](https://reactjs.org)
 [![TypeScript](https://img.shields.io/badge/Written%20in-TypeScript-blue?style=flat-square)](https://typescriptlang.org)
 
-[⬆ Back to top](#-cloudflare-enterprise-pos)
+[⬆ Back to top](#-mmnext-enterprise-pos)
 
-</div>#   m m n e x t - e n t e r p r i s e - p o s  
- #   m m n e x t - e n t e r p r i s e - p o s  
- #   m m n e x t - e n t e r p r i s e - p o s  
+</div>#   m m n e x t - e n t e r p r i s e - p o s 
+ 
+ #   m m n e x t - e n t e r p r i s e - p o s 
+ 
+ #   m m n e x t - e n t e r p r i s e - p o s 
+ 
  
 # mmnext-enterprise-pos

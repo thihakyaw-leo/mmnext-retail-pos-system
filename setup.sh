@@ -2,7 +2,7 @@
 
 # Cloudflare Enterprise POS - Setup Script
 
-echo "🚀 Setting up Cloudflare Enterprise POS System..."
+echo "🚀 Setting up MMNext Enterprise POS System..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Check if wrangler is installed
@@ -33,7 +33,7 @@ echo "🗄️ Creating Cloudflare resources..."
 
 # Create D1 database
 echo "Creating D1 database..."
-DB_OUTPUT=$(wrangler d1 create enterprise-pos-db 2>/dev/null)
+DB_OUTPUT=$(wrangler d1 create mmnext-enterprise-pos-db 2>/dev/null)
 if [ $? -eq 0 ]; then
     DB_ID=$(echo "$DB_OUTPUT" | grep -o 'database_id = "[^"]*"' | cut -d'"' -f2)
     echo "✅ D1 Database created: $DB_ID"
@@ -53,9 +53,9 @@ fi
 
 # Create R2 bucket
 echo "Creating R2 bucket..."
-wrangler r2 bucket create enterprise-pos-files 2>/dev/null
+wrangler r2 bucket create mmnext-enterprise-pos-files 2>/dev/null
 if [ $? -eq 0 ]; then
-    echo "✅ R2 Bucket created: enterprise-pos-files"
+    echo "✅ R2 Bucket created: mmnext-enterprise-pos-files"
 else
     echo "⚠️  R2 Bucket may already exist"
 fi

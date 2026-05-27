@@ -1,5 +1,5 @@
-﻿# ===============================================
-# 🚀 CLOUDFLARE ENTERPRISE POS - AUTO FIX SCRIPT
+# ===============================================
+# ?? MMnext ENTERPRISE POS - AUTO FIX SCRIPT
 # PowerShell Version for Windows
 # ===============================================
 
@@ -11,41 +11,41 @@ $ErrorActionPreference = "Stop"
 function Write-Header {
     param([string]$Message)
     Write-Host "`n===============================================" -ForegroundColor Blue
-    Write-Host "🚀 $Message" -ForegroundColor White
+    Write-Host "?? $Message" -ForegroundColor White
     Write-Host "===============================================`n" -ForegroundColor Blue
 }
 
 function Write-Step {
     param([string]$Message)
-    Write-Host "⚙️ $Message" -ForegroundColor Cyan
+    Write-Host "?? $Message" -ForegroundColor Cyan
 }
 
 function Write-Success {
     param([string]$Message)
-    Write-Host "✅ $Message" -ForegroundColor Green
+    Write-Host "? $Message" -ForegroundColor Green
 }
 
 function Write-Error {
     param([string]$Message)
-    Write-Host "❌ $Message" -ForegroundColor Red
+    Write-Host "? $Message" -ForegroundColor Red
 }
 
 function Write-Warning {
     param([string]$Message)
-    Write-Host "⚠️ $Message" -ForegroundColor Yellow
+    Write-Host "?? $Message" -ForegroundColor Yellow
 }
 
 # Main function
 function Main {
-    Write-Header "CLOUDFLARE ENTERPRISE POS - AUTO FIX"
+    Write-Header "MMNEXT ENTERPRISE POS - AUTO FIX"
     
     Write-Host "This script will fix all Cloudflare deployment issues:" -ForegroundColor Magenta
-    Write-Host "• Remove lighthouse-ci and conflicting packages" -ForegroundColor White
-    Write-Host "• Fix React peer dependency conflicts" -ForegroundColor White
-    Write-Host "• Set correct Node.js version (18.17.0)" -ForegroundColor White
-    Write-Host "• Clean package.json files" -ForegroundColor White
-    Write-Host "• Fix wrangler.toml syntax" -ForegroundColor White
-    Write-Host "• Test builds before commit`n" -ForegroundColor White
+    Write-Host "� Remove lighthouse-ci and conflicting packages" -ForegroundColor White
+    Write-Host "� Fix React peer dependency conflicts" -ForegroundColor White
+    Write-Host "� Set correct Node.js version (18.17.0)" -ForegroundColor White
+    Write-Host "� Clean package.json files" -ForegroundColor White
+    Write-Host "� Fix wrangler.toml syntax" -ForegroundColor White
+    Write-Host "� Test builds before commit`n" -ForegroundColor White
     
     $confirm = Read-Host "Continue? (y/N)"
     if ($confirm -notmatch "^[Yy]$") {
@@ -54,14 +54,14 @@ function Main {
     }
     
     try {
-        Step1-EnvironmentCheck
-        Step2-BackupCurrentState  
-        Step3-DetectProjectStructure
-        Step4-FixFrontend
-        Step5-FixBackend
-        Step6-TestBuilds
-        Step7-CommitAndPush
-        Step8-FinalInstructions
+        Invoke-Step1_EnvironmentCheck
+        Invoke-Step2_BackupCurrentState  
+        Invoke-Step3_DetectProjectStructure
+        Invoke-Step4_FixFrontend
+        Invoke-Step5_FixBackend
+        Invoke-Step6_TestBuilds
+        Invoke-Step7_CommitAndPush
+        Invoke-Step8_FinalInstructions
     }
     catch {
         Write-Error "Script failed: $($_.Exception.Message)"
@@ -69,7 +69,7 @@ function Main {
     }
 }
 
-function Step1-EnvironmentCheck {
+function Invoke-Step1_EnvironmentCheck {
     Write-Step "Step 1: Environment Check"
     
     # Check if git is installed
@@ -105,7 +105,7 @@ function Step1-EnvironmentCheck {
     Write-Success "Environment check passed`n"
 }
 
-function Step2-BackupCurrentState {
+function Invoke-Step2_BackupCurrentState {
     Write-Step "Step 2: Backup Current State"
     
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
@@ -117,7 +117,7 @@ function Step2-BackupCurrentState {
     Write-Success "Created backup branch: $backupBranch`n"
 }
 
-function Step3-DetectProjectStructure {
+function Invoke-Step3_DetectProjectStructure {
     Write-Step "Step 3: Detect Project Structure"
     
     if ((Test-Path "frontend\package.json") -and (Test-Path "backend\package.json")) {
@@ -139,7 +139,7 @@ function Step3-DetectProjectStructure {
     Write-Host ""
 }
 
-function Step4-FixFrontend {
+function Invoke-Step4_FixFrontend {
     Write-Step "Step 4: Fix Frontend"
     
     Push-Location $script:FrontendDir
@@ -168,35 +168,35 @@ function Step4-FixFrontend {
         # Create clean package.json
         Write-Step "4.2: Creating clean package.json..."
         $packageJson = @{
-            name = "cloudflare-enterprise-pos-frontend"
-            private = $true
-            version = "2.0.0"
-            type = "module"
-            engines = @{
+            name            = "mmnext-enterprise-pos-frontend"
+            private         = $true
+            version         = "2.0.0"
+            type            = "module"
+            engines         = @{
                 node = "18.17.0"
-                npm = ">=8.0.0"
+                npm  = ">=8.0.0"
             }
-            scripts = @{
-                dev = "vite"
-                build = "vite build"
+            scripts         = @{
+                dev     = "vite"
+                build   = "vite build"
                 preview = "vite preview"
-                deploy = "npm run build && wrangler pages deploy dist"
+                deploy  = "npm run build && wrangler pages deploy dist"
             }
-            dependencies = @{
-                react = "^18.3.1"
-                "react-dom" = "^18.3.1"
-                antd = "^5.15.0"
-                "react-router-dom" = "^6.8.0"
+            dependencies    = @{
+                react               = "^18.3.1"
+                "react-dom"         = "^18.3.1"
+                antd                = "^5.15.0"
+                "react-router-dom"  = "^6.8.0"
                 "@ant-design/icons" = "^5.2.0"
-                dayjs = "^1.11.0"
-                axios = "^1.6.0"
+                dayjs               = "^1.11.0"
+                axios               = "^1.6.0"
             }
             devDependencies = @{
-                "@types/react" = "^18.2.43"
-                "@types/react-dom" = "^18.2.17"
+                "@types/react"         = "^18.2.43"
+                "@types/react-dom"     = "^18.2.17"
                 "@vitejs/plugin-react" = "^4.2.1"
-                vite = "^5.1.0"
-                typescript = "^5.2.2"
+                vite                   = "^5.1.0"
+                typescript             = "^5.2.2"
             }
         }
         
@@ -260,7 +260,7 @@ legacy-peer-deps=true
     Write-Host ""
 }
 
-function Step5-FixBackend {
+function Invoke-Step5_FixBackend {
     if ($script:Structure -eq "single") {
         Write-Step "Step 5: Skip Backend (Single package structure)`n"
         return
@@ -287,21 +287,21 @@ function Step5-FixBackend {
         # Create clean package.json
         Write-Step "5.2: Creating clean package.json..."
         $packageJson = @{
-            name = "cloudflare-enterprise-pos-backend"
-            version = "1.0.0"
-            description = "Enterprise POS API on Cloudflare Workers"
-            main = "src/index.js"
-            scripts = @{
-                dev = "wrangler dev"
+            name            = "mmnext-enterprise-pos-backend"
+            version         = "1.0.0"
+            description     = "MMNEXT Enterprise POS API on Cloudflare Workers"
+            main            = "src/index.js"
+            scripts         = @{
+                dev    = "wrangler dev"
                 deploy = "wrangler deploy"
-                start = "wrangler dev"
+                start  = "wrangler dev"
             }
-            dependencies = @{
+            dependencies    = @{
                 "@cloudflare/workers-types" = "^4.20250523.0"
-                hono = "^4.0.0"
+                hono                        = "^4.0.0"
             }
             devDependencies = @{
-                wrangler = "^3.45.0"
+                wrangler   = "^3.45.0"
                 typescript = "^5.3.0"
             }
         }
@@ -311,7 +311,7 @@ function Step5-FixBackend {
         # Fix wrangler.toml
         Write-Step "5.3: Creating valid wrangler.toml..."
         $wranglerToml = @"
-name = "cloudflare-enterprise-pos-api"
+name = "mmnext-enterprise-pos-api"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 node_compat = true
@@ -323,7 +323,7 @@ pages_build_output_dir = "../frontend/dist"
 ENVIRONMENT = "development"
 
 [env.production]
-name = "cloudflare-enterprise-pos-api-prod"
+name = "mmnext-enterprise-pos-api-prod"
 
 [env.production.vars]
 ENVIRONMENT = "production"
@@ -345,7 +345,7 @@ ENVIRONMENT = "production"
     Write-Host ""
 }
 
-function Step6-TestBuilds {
+function Invoke-Step6_TestBuilds {
     Write-Step "Step 6: Test Builds"
     
     # Test frontend build
@@ -355,7 +355,7 @@ function Step6-TestBuilds {
     try {
         npm run build
         Write-Success "Frontend build successful!"
-        Write-Host "🏗️ Build output in dist\:" -ForegroundColor Green
+        Write-Host "??? Build output in dist\:" -ForegroundColor Green
         Get-ChildItem "dist" | Select-Object -First 5 | Format-Table Name, Length
     }
     catch {
@@ -373,7 +373,7 @@ function Step6-TestBuilds {
         Push-Location $script:BackendDir
         
         try {
-            $result = wrangler deploy --dry-run 2>&1
+            $null = wrangler deploy --dry-run 2>&1
             Write-Success "Backend wrangler config valid!"
         }
         catch {
@@ -387,15 +387,15 @@ function Step6-TestBuilds {
     Write-Success "All builds tested successfully`n"
 }
 
-function Step7-CommitAndPush {
+function Invoke-Step7_CommitAndPush {
     Write-Step "Step 7: Commit and Push Changes"
     
     git add .
     
     $commitMsg = @"
-🚀 AUTO-FIX: Resolve all Cloudflare deployment issues
+?? AUTO-FIX: Resolve all Cloudflare deployment issues
 
-✅ FIXES APPLIED:
+? FIXES APPLIED:
 - Remove lighthouse-ci@^0.12.0 (non-existent package)
 - Remove @react-three/fiber conflicts (React 19 vs 18)
 - Remove react-spring, react-native dependencies
@@ -405,14 +405,14 @@ function Step7-CommitAndPush {
 - Add legacy-peer-deps for npm compatibility
 - Test builds before commit
 
-🎯 RESULTS:
+?? RESULTS:
 - Install time: < 30s (was 4+ minutes)
 - No peer dependency conflicts
 - Clean dependency tree
 - Valid wrangler.toml
 - Ready for Cloudflare Pages deployment
 
-🌐 NEXT: Deploy should complete in < 2 minutes total
+?? NEXT: Deploy should complete in < 2 minutes total
 "@
     
     git commit -m $commitMsg
@@ -427,29 +427,29 @@ function Step7-CommitAndPush {
     }
 }
 
-function Step8-FinalInstructions {
+function Invoke-Step8_FinalInstructions {
     Write-Step "Step 8: Final Instructions"
     
     Write-Host ""
-    Write-Host "🔥 AUTO-FIX COMPLETED SUCCESSFULLY! 🔥" -ForegroundColor Green
+    Write-Host "?? AUTO-FIX COMPLETED SUCCESSFULLY! ??" -ForegroundColor Green
     Write-Host ""
     Write-Host "===============================================" -ForegroundColor Cyan
-    Write-Host "✅ WHAT WAS FIXED:" -ForegroundColor White
-    Write-Host "✅ Removed lighthouse-ci@^0.12.0" -ForegroundColor Green
-    Write-Host "✅ Fixed React peer dependency conflicts" -ForegroundColor Green
-    Write-Host "✅ Removed conflicting packages" -ForegroundColor Green
-    Write-Host "✅ Set Node version to 18.17.0" -ForegroundColor Green
-    Write-Host "✅ Fixed wrangler.toml syntax" -ForegroundColor Green
-    Write-Host "✅ Added legacy-peer-deps flag" -ForegroundColor Green
-    Write-Host "✅ Tested builds successfully" -ForegroundColor Green
+    Write-Host "? WHAT WAS FIXED:" -ForegroundColor White
+    Write-Host "? Removed lighthouse-ci@^0.12.0" -ForegroundColor Green
+    Write-Host "? Fixed React peer dependency conflicts" -ForegroundColor Green
+    Write-Host "? Removed conflicting packages" -ForegroundColor Green
+    Write-Host "? Set Node version to 18.17.0" -ForegroundColor Green
+    Write-Host "? Fixed wrangler.toml syntax" -ForegroundColor Green
+    Write-Host "? Added legacy-peer-deps flag" -ForegroundColor Green
+    Write-Host "? Tested builds successfully" -ForegroundColor Green
     Write-Host ""
-    Write-Host "🚀 NEXT DEPLOYMENT SHOULD:" -ForegroundColor White
-    Write-Host "⚡ Install dependencies in < 30 seconds" -ForegroundColor Green
-    Write-Host "⚡ Build successfully without conflicts" -ForegroundColor Green
-    Write-Host "⚡ Complete deployment in < 2 minutes" -ForegroundColor Green
+    Write-Host "?? NEXT DEPLOYMENT SHOULD:" -ForegroundColor White
+    Write-Host "? Install dependencies in < 30 seconds" -ForegroundColor Green
+    Write-Host "? Build successfully without conflicts" -ForegroundColor Green
+    Write-Host "? Complete deployment in < 2 minutes" -ForegroundColor Green
     Write-Host ""
     Write-Host "===============================================" -ForegroundColor Cyan
-    Write-Host "📦 CLOUDFLARE PAGES SETUP:" -ForegroundColor White
+    Write-Host "?? CLOUDFLARE PAGES SETUP:" -ForegroundColor White
     Write-Host "1. Go to Cloudflare Dashboard" -ForegroundColor Yellow
     Write-Host "2. Workers & Pages > Pages > Create application" -ForegroundColor Yellow
     Write-Host "3. Connect to Git > Select your repo" -ForegroundColor Yellow
@@ -461,7 +461,7 @@ function Step8-FinalInstructions {
     Write-Host "   NODE_VERSION = 18.17.0" -ForegroundColor White
     Write-Host "6. Save and Deploy!" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "🚀 Expected URL: https://enterprise-pos.pages.dev" -ForegroundColor Green
+    Write-Host "?? Expected URL: https://mmnext-enterprise-pos.pages.dev" -ForegroundColor Green
     Write-Host ""
     Write-Host "Need help? Check the build logs in Cloudflare Dashboard" -ForegroundColor Magenta
     Write-Host ""
@@ -469,3 +469,4 @@ function Step8-FinalInstructions {
 
 # Run main function
 Main
+

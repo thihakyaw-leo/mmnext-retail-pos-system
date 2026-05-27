@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Cloudflare Enterprise POS - Master Deployment Script
+# MMNext Enterprise POS - Master Deployment Script
 
-echo "🚀 Deploying Cloudflare Enterprise POS System..."
+echo "🚀 Deploying MMnext Enterprise POS System..."
 
 # Check if user is logged in to Cloudflare
 if ! wrangler whoami &> /dev/null; then
@@ -39,8 +39,8 @@ cd ..
 echo ""
 echo "🎉 Deployment Complete!"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "📱 Frontend: https://cloudflare-enterprise-pos.pages.dev"
-echo "📡 Backend API: https://enterprise-pos-backend.your-subdomain.workers.dev"
+echo "📱 Frontend: https://mmnext-enterprise-pos.pages.dev"
+echo "📡 Backend API: https://mmnext-enterprise-pos-backend.your-subdomain.workers.dev"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "🔧 Next steps:"

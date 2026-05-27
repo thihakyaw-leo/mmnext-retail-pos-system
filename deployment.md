@@ -93,8 +93,8 @@ sudo systemctl restart redis
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/your-org/enterprise-pos-system.git
-cd enterprise-pos-system
+git clone https://github.com/thihakyaw-leo/mmnext-enterprise-pos.git
+cd mmnext-enterprise-pos
 ```
 
 ### 2. Environment Configuration
