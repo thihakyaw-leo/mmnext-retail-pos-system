@@ -7,69 +7,66 @@
 ![Free Tier](https://img.shields.io/badge/100%25-FREE-green?style=for-the-badge)
 ![Version](https://img.shields.io/badge/Version-2.0.0-brightgreen?style=for-the-badge)
 
-**100% FREE enterprise-grade Point of Sale system built entirely on Cloudflare's edge platform with AI-powered features**
+**Cloudflare ၏ Edge Platform ပေါ်တွင် အပြည့်အဝ တည်ဆောက်ထားပြီး AI နည်းပညာများ ပါဝင်သော ၁၀၀% အခမဲ့ Enterprise အဆင့်မီ အရောင်းစီမံခန့်ခွဲမှုစနစ် (Point of Sale)**
 
-[🌟 Demo](https://pos-demo.pages.dev) | [📖 Documentation](./docs/) | [🐛 Issues](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/issues) | [💬 Discussions](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions)
+[🌟 Demo စမ်းသပ်ရန်](https://pos-demo.pages.dev) | [📖 စနစ်အသုံးပြုပုံ လမ်းညွှန်](./docs/) | [🐛 အမှားအယွင်းများတင်ပြရန်](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/issues) | [💬 ဆွေးနွေးရန်](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions)
 
 </div>
 
 ---
 
-## ✨ **Features Overview**
+## ✨ **အဓိက လုပ်ဆောင်ချက်များ (Features Overview)**
 
 <table>
 <tr>
 <td width="50%">
 
-### 🔐 **Multi-Role Access Control**
-- **Admin**: Full system management
-- **Manager**: Operational oversight  
-- **Cashier**: POS operations
-- **Staff**: Sales & gamification
-- **10-tier** role hierarchy with **100+ permissions**
+### 🔐 **ရာထူးအလိုက် ဝင်ရောက်ခွင့် ထိန်းချုပ်ခြင်း**
+- **Admin**: စနစ်တစ်ခုလုံးကို စီမံခန့်ခွဲနိုင်ခြင်း
+- **Manager**: လုပ်ငန်းလည်ပတ်မှုများကို ကြီးကြပ်နိုင်ခြင်း
+- **Cashier**: အရောင်းကောင်တာ လုပ်ငန်းစဉ်များ
+- **Staff**: အရောင်း နှင့် Gamification (ဂိမ်းဆန်ဆန် ဆုပေးစနစ်)
+- ရာထူးအဆင့် **၁၀ မျိုး** နှင့် လုပ်ပိုင်ခွင့် (Permissions) **၁၀၀ ကျော်**
 
-### 🛒 **Real-time POS Terminal**
-- Lightning-fast checkout process
-- **Offline-first** PWA design
-- Barcode scanning support
-- Multiple payment methods
-- Split payments & layaway
-- **AI-powered** product suggestions
+### 🛒 **အချိန်နှင့်တပြေးညီ အရောင်းကောင်တာ (Real-time POS)**
+- အလွန်မြန်ဆန်သော ငွေရှင်းစနစ်
+- အင်တာနက်မရှိလည်း အလုပ်လုပ်နိုင်သော **Offline-first** PWA ဒီဇိုင်း
+- Barcode ဖတ်စနစ်
+- ငွေချေစနစ် မျိုးစုံကို လက်ခံနိုင်ခြင်း
+- ငွေခွဲရှင်းခြင်း (Split payments) နှင့် ကြိုတင်မှာယူခြင်း (Layaway)
+- **AI-အခြေခံ** ပစ္စည်းအကြံပြုချက်များ
 
-### 📦 **Smart Inventory Management**
-- Real-time stock tracking
-- **AI demand forecasting**
-- Automatic reorder points
-- Multi-warehouse support
-- Cycle counting
-- Stock movement analytics
+### 📦 **စမတ်ကျသော ကုန်ပစ္စည်းစာရင်း စီမံခန့်ခွဲမှု**
+- လက်ကျန်စာရင်းကို အချိန်နှင့်တပြေးညီ ကြည့်ရှုနိုင်ခြင်း
+- **AI ဖြင့် ဝယ်လိုအား ခန့်မှန်းခြင်း**
+- အလိုအလျောက် ပစ္စည်းပြန်လည်မှာယူမှု စနစ်
+- ဂိုဒေါင်မျိုးစုံ အသုံးပြုနိုင်ခြင်း
+- ပစ္စည်းအဝင်အထွက် မှတ်တမ်းများ
 
 </td>
 <td width="50%">
 
-### 👥 **Advanced Customer CRM**
-- Customer profiles & history
-- **Loyalty points system**
-- Birthday & anniversary tracking
-- **AI customer segmentation**
-- Marketing automation
-- Personalized offers
+### 👥 **အဆင့်မြင့် ဖောက်သည်စီမံခန့်ခွဲမှု (CRM)**
+- ဖောက်သည်များ၏ ကိုယ်ရေးအချက်အလက်နှင့် ဝယ်ယူမှုမှတ်တမ်းများ
+- **အမှတ်ပေးစနစ် (Loyalty points)**
+- မွေးနေ့ နှင့် နှစ်ပတ်လည် မှတ်တမ်းများ
+- **AI ဖြင့် ဖောက်သည်များကို အမျိုးအစားခွဲခြားခြင်း**
+- Marketing အလိုအလျောက် လုပ်ဆောင်ခြင်း
 
-### 🎮 **Staff Gamification**
-- **Achievement system** with badges
-- Real-time **leaderboards**
-- Team competitions
-- **Commission tracking**
-- Performance analytics
-- Training modules
+### 🎮 **ဝန်ထမ်းများအတွက် Gamification စနစ်**
+- ရရှိထားသော **အောင်မြင်မှုတံဆိပ်များ (Badges)**
+- အချိန်နှင့်တပြေးညီ **အဆင့်သတ်မှတ်ချက်များ (Leaderboards)**
+- အဖွဲ့လိုက် ပြိုင်ပွဲများ
+- **ကော်မရှင် မှတ်တမ်းများ**
+- စွမ်းဆောင်ရည် သုံးသပ်ချက်များ
 
-### 📊 **Business Intelligence**
-- Real-time analytics dashboard
-- **AI-powered insights**
-- Custom report builder
-- Sales forecasting
-- Profit margin analysis
-- Multi-store comparisons
+### 📊 **လုပ်ငန်းဆိုင်ရာ ဉာဏ်ရည်တု (Business Intelligence)**
+- အချိန်နှင့်တပြေးညီ Dashboard
+- **AI မှတဆင့် အကြံဉာဏ်ပေးမှုများ**
+- စိတ်ကြိုက် Report များ ဖန်တီးနိုင်ခြင်း
+- အရောင်း ခန့်မှန်းတွက်ချက်ခြင်း
+- အမြတ်အစွန်း လေ့လာဆန်းစစ်ခြင်း
+- ဆိုင်ခွဲများအကြား နှိုင်းယှဉ်လေ့လာနိုင်ခြင်း
 
 </td>
 </tr>
@@ -77,14 +74,14 @@
 
 ---
 
-## 🏗️ **Architecture**
+## 🏗️ **တည်ဆောက်ပုံ (Architecture)**
 
 ### **🌐 Edge-First Design**
-Built entirely on **Cloudflare's global edge network** for maximum performance and reliability.
+အကောင်းဆုံး စွမ်းဆောင်ရည်နှင့် ယုံကြည်စိတ်ချရမှုအတွက် **Cloudflare ၏ ကမ္ဘာလုံးဆိုင်ရာ Edge Network** ပေါ်တွင် အပြည့်အဝ တည်ဆောက်ထားပါသည်။
 
 ```mermaid
 graph TB
-    A[User Device] --> B[Cloudflare Edge]
+    A[အသုံးပြုသူ] --> B[Cloudflare Edge]
     B --> C[Workers Runtime]
     B --> D[Pages Frontend]
     C --> E[D1 Database]
@@ -94,333 +91,129 @@ graph TB
     C --> I[Durable Objects]
 ```
 
-### **⚡ Technology Stack**
+### **⚡ နည်းပညာများ (Technology Stack)**
 
-| Component | Technology | Purpose |
+| အပိုင်း | အသုံးပြုထားသော နည်းပညာ | ရည်ရွယ်ချက် |
 |-----------|------------|---------|
-| **Runtime** | Cloudflare Workers | Edge computing & API |
-| **Database** | Cloudflare D1 (SQLite) | Transactional data |
-| **Cache** | Cloudflare KV | Session & config data |
-| **Storage** | Cloudflare R2 | File storage |
-| **AI** | Cloudflare AI | Machine learning |
+| **Runtime** | Cloudflare Workers | Edge computing နှင့် API |
+| **Database** | Cloudflare D1 (SQLite) | အချက်အလက်များ သိမ်းဆည်းရန် |
+| **Cache** | Cloudflare KV | Session နှင့် Config အချက်အလက်များ |
+| **Storage** | Cloudflare R2 | ဖိုင်များ သိမ်းဆည်းရန် |
+| **AI** | Cloudflare AI | Machine learning အတွက် |
 | **Real-time** | Durable Objects | WebSocket connections |
-| **Frontend** | React 18 + Vite | Modern UI framework |
-| **UI Library** | Ant Design | Enterprise components |
-| **PWA** | Service Workers | Offline functionality |
+| **Frontend** | React 18 + Vite | ခေတ်မီ UI |
+| **UI Library** | Ant Design | Enterprise UI Components |
+| **PWA** | Service Workers | Offline ဖြင့် အသုံးပြုရန် |
 
 ---
 
-## 🚀 **Quick Start**
+## 🚀 **အမြန်စတင်နည်း (Quick Start)**
 
-### **📋 Prerequisites**
-- **Node.js** 18+ and npm 9+
-- **Cloudflare account** (free tier)
-- **Git** for version control
+### **📋 လိုအပ်ချက်များ (Prerequisites)**
+- **Node.js** 18+ နှင့် npm 9+
+- **Cloudflare account** (အခမဲ့ အကောင့်)
+- **Git**
 
-### **⚡ One-Command Setup**
+### **⚡ တစ်ချက်နှိပ်ရုံဖြင့် ထည့်သွင်းခြင်း (One-Command Setup)**
 
 ```bash
-# Clone and setup everything
+# Clone လုပ်ပြီး Setup လုပ်ရန်
 git clone https://github.com/thihakyaw-leo/mmnext-enterprise-pos.git
 cd mmnext-enterprise-pos
 chmod +x scripts/setup.sh && ./scripts/setup.sh
 ```
 
-### **🔧 Manual Setup**
+### **🔧 ကိုယ်တိုင် ထည့်သွင်းနည်း (Manual Setup)**
 
 <details>
-<summary>Click to expand manual setup steps</summary>
+<summary>ကိုယ်တိုင် ထည့်သွင်းမည့် အဆင့်များကို ကြည့်ရန်</summary>
 
 ```bash
-# 1. Install dependencies
+# ၁. Dependencies များသွင်းရန်
 npm install
 
-# 2. Setup Cloudflare CLI
+# ၂. Cloudflare CLI ထည့်သွင်းရန်
 npm install -g wrangler
 wrangler login
 
-# 3. Configure environment
+# ၃. Environment သတ်မှတ်ရန်
 cp .env.example .env
-# Edit .env with your Cloudflare credentials
+# .env ဖိုင်ထဲတွင် Cloudflare credentials များကို ပြင်ဆင်ထည့်သွင်းပါ
 
-# 4. Create database
+# ၄. Database တည်ဆောက်ရန်
 npm run migrate
 npm run seed
 
-# 5. Start development
+# ၅. Development Server စတင်ရန်
 npm run dev
 ```
 
 </details>
 
-### **🌐 Access Your Application**
+### **🌐 စနစ်သို့ ဝင်ရောက်ခြင်း**
 
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8787
-- **Admin Login**: `admin@pos.com` / `admin123`
+- **Admin ဝင်ရန် အကောင့်**: `admin@pos.com` / `admin123`
 
 ---
 
-## 💰 **100% FREE - Cloudflare Tier Limits**
+## 💰 **၁၀၀% အခမဲ့ - Cloudflare Free Tier အသုံးပြုမှု**
 
-| Service | Free Tier Limit | Enterprise POS Usage |
+| ဝန်ဆောင်မှု | အခမဲ့ ကန့်သတ်ချက် | POS တွင် အသုံးပြုမှု |
 |---------|-----------------|----------------------|
-| **Workers** | 100K requests/day | API endpoints |
-| **D1 Database** | 5GB + 5M reads/day | Product, order, customer data |
-| **KV Store** | 100K reads/day + 1GB | Sessions, settings, cache |
-| **R2 Storage** | 10GB + 1M operations | Images, receipts, backups |
-| **Pages** | Unlimited bandwidth | Frontend hosting |
-| **AI** | 10K neurons/day | Recommendations, forecasting |
+| **Workers** | 100K requests/နေ့ | API endpoints |
+| **D1 Database** | 5GB + 5M reads/နေ့ | ပစ္စည်း၊ အော်ဒါ၊ ဖောက်သည် အချက်အလက်များ |
+| **KV Store** | 100K reads/နေ့ + 1GB | Sessions, settings, cache |
+| **R2 Storage** | 10GB + 1M operations | ဓာတ်ပုံ၊ ဖြတ်ပိုင်း၊ Backup ဖိုင်များ |
+| **Pages** | Unlimited bandwidth | Frontend Hosting |
+| **AI** | 10K neurons/နေ့ | အကြံပြုချက်များနှင့် ခန့်မှန်းတွက်ချက်မှုများ |
 
-> **💡 Perfect for**: Small to medium businesses, startups, proof of concepts
+> **💡 အသင့်တော်ဆုံးလုပ်ငန်းများ**: လုပ်ငန်းငယ်မှ အလတ်စားများ၊ Startups များ
 
 ---
 
-## 📁 **Project Structure**
+## 📁 **Project ဖွဲ့စည်းပုံ (Structure)**
 
-```
+```text
 mmnext-enterprise-pos/
 ├── 📱 frontend/                 # React PWA
 │   ├── src/
-│   │   ├── auth/               # Authentication system
-│   │   ├── components/         # Reusable components
-│   │   ├── pages/              # Role-based pages
-│   │   │   ├── admin/          # 👑 Admin interface
-│   │   │   ├── cashier/        # 💰 POS terminal
-│   │   │   └── staff/          # 🎮 Gamification
-│   │   ├── services/           # API clients
-│   │   ├── hooks/              # Custom React hooks
-│   │   └── utils/              # Utilities
-│   ├── public/                 # Static assets
-│   └── dist/                   # Build output
+│   │   ├── auth/               # အကောင့်ဝင်စနစ်များ
+│   │   ├── components/         # ပြန်လည်အသုံးပြုနိုင်သော Components များ
+│   │   ├── pages/              # ရာထူးအလိုက် စာမျက်နှာများ
+│   │   │   ├── admin/          # 👑 Admin စာမျက်နှာ
+│   │   │   ├── cashier/        # 💰 POS အရောင်းကောင်တာ
+│   │   │   └── staff/          # 🎮 Gamification အပိုင်း
+│   │   ├── services/           # API ချိတ်ဆက်မှုများ
+│   └── public/                 # ပုံနှင့် Assets များ
 │
 ├── ⚙️ backend/                  # Cloudflare Workers
 │   ├── src/
-│   │   ├── routes/             # API endpoints
-│   │   ├── middleware/         # Auth, CORS, etc.
-│   │   ├── services/           # Business logic
-│   │   └── utils/              # Helper functions
-│   ├── database/               # Schema & migrations
-│   ├── migrations/             # Database migrations
-│   └── wrangler.toml          # Cloudflare config
+│   │   ├── routes/             # API လမ်းကြောင်းများ
+│   │   ├── middleware/         # Auth, CORS စသည်တို့
+│   │   └── services/           # လုပ်ငန်းစဉ်ဆိုင်ရာ Logic များ
+│   ├── database/               # Database Schema
+│   └── wrangler.toml           # Cloudflare Config
 │
-├── 📚 docs/                     # Documentation
-├── 🛠️ scripts/                 # Automation scripts
-├── 🧪 tests/                   # Test suites
-└── 📋 package.json             # Root configuration
+├── 📚 docs/                     # Documentation လမ်းညွှန်စာအုပ်
+├── 🛠️ scripts/                 # အလိုအလျောက် Automation Scripts
+└── 📋 package.json              # Main Configuration ဖိုင်
 ```
 
 ---
 
-## 🎯 **Feature Deep Dive**
+## 🤝 **ပါဝင်အားဖြည့်ရန် (Contributing)**
 
-### **🤖 AI-Powered Intelligence**
-
-<details>
-<summary>View AI Features</summary>
-
-- **🔮 Demand Forecasting**: Predict inventory needs
-- **💡 Smart Recommendations**: Cross-sell and upsell suggestions  
-- **💰 Dynamic Pricing**: AI-optimized pricing strategies
-- **👥 Customer Segmentation**: Behavioral analysis
-- **📈 Sales Predictions**: Revenue forecasting
-- **🎯 Personalization**: Individual customer experiences
-
-</details>
-
-### **🎮 Gamification System**
-
-<details>
-<summary>View Gamification Features</summary>
-
-- **🏆 Achievement System**: 50+ badges and milestones
-- **📊 Leaderboards**: Daily, weekly, monthly rankings
-- **⚡ Challenges**: Individual and team competitions
-- **🎁 Reward Store**: Points-based rewards
-- **📈 Progress Tracking**: Visual performance metrics
-- **🎖️ Certification**: Training completion badges
-
-</details>
-
-### **📱 PWA Capabilities**
-
-<details>
-<summary>View PWA Features</summary>
-
-- **📱 Installable**: Add to home screen
-- **🌐 Offline-first**: Continue working without internet
-- **⚡ Fast Loading**: Instant startup with caching
-- **🔄 Background Sync**: Sync when connection restored
-- **📲 Push Notifications**: Real-time alerts
-- **🎯 App Shortcuts**: Quick access to features
-
-</details>
+ကျွန်ုပ်တို့၏ [Contributing Guide](./CONTRIBUTING.md) တွင် ဝင်ရောက်လေ့လာပြီး ပါဝင်အားဖြည့်နိုင်ပါသည်။
 
 ---
 
-## 🔧 **Development Guide**
+## 💬 **အကူအညီနှင့် အကြံပြုချက်များ (Support)**
 
-### **📝 Available Scripts**
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development servers |
-| `npm run build` | Build for production |
-| `npm run deploy` | Deploy to Cloudflare |
-| `npm run test` | Run all tests |
-| `npm run lint` | Lint code |
-| `npm run migrate` | Run database migrations |
-| `npm run seed` | Seed sample data |
-
-### **🧪 Testing**
-
-```bash
-# Run all tests
-npm test
-
-# Watch mode
-npm run test:watch
-
-# Coverage report
-npm run test:coverage
-
-# E2E tests
-npm run test:e2e
-```
-
-### **🚀 Deployment**
-
-```bash
-# Deploy to production
-npm run deploy
-
-# Deploy specific environment
-npm run deploy:staging
-npm run deploy:production
-
-# Monitor deployment
-npm run monitoring
-```
-
----
-
-## 🔐 **Security & Compliance**
-
-### **🛡️ Security Features**
-- **JWT Authentication** with refresh tokens
-- **Role-based Access Control** (RBAC)
-- **API Rate Limiting** and DDoS protection
-- **Input Validation** and sanitization
-- **HTTPS Everywhere** with Cloudflare SSL
-- **Audit Logging** for compliance
-
-### **📋 Compliance**
-- **GDPR** ready with data export/deletion
-- **PCI DSS** considerations for payment data
-- **SOX** compliance features for financial reporting
-- **CCPA** privacy controls
-
----
-
-## 📊 **Performance Metrics**
-
-| Metric | Target | Achieved |
-|--------|--------|----------|
-| **First Contentful Paint** | < 1.5s | ✅ 0.8s |
-| **Largest Contentful Paint** | < 2.5s | ✅ 1.2s |
-| **Time to Interactive** | < 3.5s | ✅ 2.1s |
-| **Cumulative Layout Shift** | < 0.1 | ✅ 0.05 |
-| **API Response Time** | < 100ms | ✅ 45ms |
-
----
-
-## 🌍 **Global Edge Network**
-
-Your POS system runs on **Cloudflare's 300+ edge locations** worldwide:
-
-- **🇺🇸 Americas**: 100+ locations
-- **🇪🇺 Europe**: 80+ locations  
-- **🇦🇺 Asia Pacific**: 70+ locations
-- **🌍 Africa & Middle East**: 50+ locations
-
-**Result**: < 50ms latency for 95% of global users
-
----
-
-## 🤝 **Contributing**
-
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
-
-### **🔄 Development Workflow**
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### **📋 Code Style**
-
-We use **ESLint** and **Prettier** for code formatting:
-
-```bash
-npm run lint        # Check code style
-npm run lint:fix    # Fix automatically
-npm run format      # Format all files
-```
-
----
-
-## 📚 **Documentation**
-
-| Topic | Link |
-|-------|------|
-| **API Reference** | [docs/api/](./docs/api/) |
-| **Component Guide** | [docs/components/](./docs/components/) |
-| **Deployment** | [docs/deployment/](./docs/deployment/) |
-| **Architecture** | [docs/architecture/](./docs/architecture/) |
-| **Troubleshooting** | [docs/troubleshooting/](./docs/troubleshooting/) |
-
----
-
-## 💬 **Community & Support**
-
-### **🆘 Get Help**
-- 🐛 [Report bugs](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/issues)
-- 💡 [Feature requests](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions)
-- ❓ [Ask questions](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions/categories/q-a)
-- 📧 Email: [support@yourcompany.com](mailto:support@yourcompany.com)
-
-### **🌟 Show Your Support**
-If this project helps you, please ⭐ star the repository!
-
----
-
-## 🏆 **Success Stories**
-
-> *"Migrated our entire POS system to Cloudflare Enterprise POS. 300% performance improvement and $2000/month savings!"*  
-> **— Tech Startup CEO**
-
-> *"The gamification features boosted our staff productivity by 40%. Amazing system!"*  
-> **— Retail Chain Manager**
-
-> *"Perfect for our global business. Same fast experience in every country."*  
-> **— E-commerce Director**
-
----
-
-## 📄 **License**
-
-This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
-
----
-
-## 🙏 **Acknowledgments**
-
-- **Cloudflare** for the amazing edge platform
-- **React Team** for the fantastic framework
-- **Ant Design** for beautiful components
-- **Community Contributors** for their valuable input
+- 🐛 [အမှားအယွင်းများ (Bugs) တင်ပြရန်](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/issues)
+- 💡 [လုပ်ဆောင်ချက်အသစ်များ အကြံပြုရန်](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions)
+- ❓ [မေးခွန်းများမေးရန်](https://github.com/thihakyaw-leo/mmnext-enterprise-pos/discussions/categories/q-a)
 
 ---
 
@@ -432,13 +225,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE
 [![React](https://img.shields.io/badge/Built%20with-React-blue?style=flat-square)](https://reactjs.org)
 [![TypeScript](https://img.shields.io/badge/Written%20in-TypeScript-blue?style=flat-square)](https://typescriptlang.org)
 
-[⬆ Back to top](#-mmnext-enterprise-pos)
+[⬆ အပေါ်သို့ ပြန်တက်ရန်](#-mmnext-enterprise-pos)
 
-</div>#   m m n e x t - e n t e r p r i s e - p o s 
- 
- #   m m n e x t - e n t e r p r i s e - p o s 
- 
- #   m m n e x t - e n t e r p r i s e - p o s 
- 
- 
-# mmnext-enterprise-pos
+</div>
