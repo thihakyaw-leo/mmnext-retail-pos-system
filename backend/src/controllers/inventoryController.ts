@@ -1,72 +1,74 @@
 import { Context } from 'hono';
+import { z } from 'zod';
+import { InventoryService } from '../services/inventoryService.js';
 import { Bindings } from '../types/env.js';
 
-interface StockAdjustment {
-  product_id: number;
-  store_id: number;
-  quantity: number; // positive for adding, negative for removing
-}
+export const inventoryUpdateSchema = z.object({
+  store_id: z.number(),
+  product_id: z.number(),
+  quantity_change: z.number(),
+  reason: z.string().min(1, 'Reason is required')
+});
 
 export class InventoryController {
   
-  /**
-   * Bulk Update Stock using D1 Batching
-   * Takes an array of stock adjustments and applies them in a single database round-trip.
-   */
-  async bulkUpdateStock(c: Context<Bindings>) {
+  static async getInventory(c: Context<Bindings>) {
     try {
-      const body = await c.req.json();
-      const adjustments: StockAdjustment[] = body.adjustments;
-
-      if (!adjustments || !Array.isArray(adjustments) || adjustments.length === 0) {
-        return c.json({ error: 'Valid array of adjustments is required.' }, 400);
-      }
-
-      // We enforce a reasonable limit to prevent hitting D1 constraints (e.g. max 100 statements per batch)
-      if (adjustments.length > 100) {
-        return c.json({ error: 'Maximum batch size is 100 items.' }, 400);
-      }
-
-      // Prepare the base SQL statement
-      // Assuming a simplistic inventory schema:
-      // UPDATE inventory SET quantity_on_hand = quantity_on_hand + ? WHERE product_id = ? AND store_id = ?
-      const statement = c.env.DB.prepare(`
-        UPDATE inventory 
-        SET quantity_on_hand = quantity_on_hand + ?, 
-            updated_at = CURRENT_TIMESTAMP
-        WHERE product_id = ? AND store_id = ?
-      `);
-
-      // Create an array of prepared statements by binding values to each
-      const statementsToBatch = adjustments.map(adj => 
-        statement.bind(adj.quantity, adj.product_id, adj.store_id)
-      );
-
-      // Execute all statements in a single batch
-      // This is highly optimized compared to running .run() inside a for loop
-      const results = await c.env.DB.batch(statementsToBatch);
-
-      // Calculate how many rows were actually affected across all statements
-      let totalUpdated = 0;
-      for (const res of results) {
-        if (res.meta && res.meta.changes) {
-          totalUpdated += res.meta.changes;
-        }
-      }
-
-      return c.json({
-        success: true,
-        message: 'Bulk stock update completed successfully.',
-        items_processed: adjustments.length,
-        items_updated: totalUpdated
-      });
-
+      const orgId = c.get('orgId') as string;
+      const filters = c.req.query();
+      const inventoryService = new InventoryService(c.env);
+      
+      const result = await inventoryService.getInventory(orgId, filters);
+      return c.json(result);
     } catch (error: any) {
-      console.error('Bulk Update Stock Error:', error);
-      return c.json({ 
-        error: 'Failed to perform bulk update.',
-        details: c.env.ENVIRONMENT === 'development' ? error.message : undefined 
-      }, 500);
+      console.error('Error fetching inventory:', error);
+      return c.json({ error: 'Failed to fetch inventory', details: error.message }, 500);
+    }
+  }
+
+  static async getInventoryLogs(c: Context<Bindings>) {
+    try {
+      const orgId = c.get('orgId') as string;
+      const filters = c.req.query();
+      const inventoryService = new InventoryService(c.env);
+      
+      const result = await inventoryService.getInventoryLogs(orgId, filters);
+      return c.json(result);
+    } catch (error: any) {
+      console.error('Error fetching inventory logs:', error);
+      return c.json({ error: 'Failed to fetch inventory logs', details: error.message }, 500);
+    }
+  }
+
+  static async updateInventoryLevel(c: Context<Bindings>) {
+    try {
+      const orgId = c.get('orgId') as string;
+      const user = c.get('user') as any;
+      const inventoryService = new InventoryService(c.env);
+      
+      const body = await c.req.json();
+      const validatedData = inventoryUpdateSchema.parse(body);
+      
+      const result = await inventoryService.updateInventoryLevel(
+        orgId,
+        validatedData.store_id,
+        validatedData.product_id,
+        validatedData.quantity_change,
+        user.id,
+        validatedData.reason
+      );
+      
+      if (!result.success) {
+        return c.json({ error: (result as any).error }, (result as any).status);
+      }
+      
+      return c.json(result);
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        return c.json({ error: 'Validation failed', details: (error as any).errors }, 400);
+      }
+      console.error('Error updating inventory:', error);
+      return c.json({ error: 'Failed to update inventory', details: error.message }, 500);
     }
   }
 }

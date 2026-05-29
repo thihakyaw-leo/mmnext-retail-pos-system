@@ -76,6 +76,19 @@ export async function verifyToken(token, secret) {
 }
 
 /**
+ * Blacklist a JWT token
+ * @param {Object} cache - KV Cache service instance
+ * @param {string} token - JWT token to blacklist
+ * @param {number} exp - Token expiration timestamp
+ */
+export async function blacklistToken(cache, token, exp) {
+    if (!token || !exp) return;
+    const ttl = Math.max(1, exp - Math.floor(Date.now() / 1000));
+    // Set token in cache with a prefix, expiring when the token itself expires
+    await cache.set(`blacklist:${token}`, 'true', ttl);
+}
+
+/**
  * Extract token from Authorization header
  * @param {Request} request - HTTP request
  * @returns {string|null} JWT token or null
@@ -401,14 +414,33 @@ export const authMiddleware = async (c: any, next: any) => {
             return c.json({ error: 'Invalid or expired token' }, 401);
         }
         
-        // Extract orgId from the JWT payload and attach to context
-        const orgId = payload.orgId;
+        // Extract orgId from the JWT payload, OR fetch from DB as fallback
+        let orgId = payload.orgId || payload.organization_id;
+        
         if (!orgId) {
-            return c.json({ error: 'Organization context missing in token' }, 403);
+            // Fallback: look up from users table using userId in token
+            try {
+                const userId = payload.userId || payload.id || payload.sub;
+                if (userId) {
+                    const row = await c.env.DB.prepare(
+                        'SELECT organization_id FROM users WHERE id = ? LIMIT 1'
+                    ).bind(userId).first();
+                    if (row && row.organization_id) {
+                        orgId = String(row.organization_id);
+                    }
+                }
+            } catch (dbErr) {
+                console.error('Failed to fetch orgId from DB:', dbErr);
+            }
+        }
+        
+        // Default to org '1' for single-tenant setups if still missing
+        if (!orgId) {
+            orgId = '1';
         }
         
         c.set('user', payload); // Set basic user payload
-        c.set('orgId', orgId);  // Ensure orgId is explicitly on context for tenant isolation
+        c.set('orgId', String(orgId));  // Ensure orgId is explicitly on context for tenant isolation
         
         await next();
     } catch (error) {

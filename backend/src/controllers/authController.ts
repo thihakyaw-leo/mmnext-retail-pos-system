@@ -9,7 +9,9 @@
 import jwt from 'jsonwebtoken';
 import { DatabaseService } from '../utils/database.js';
 import { KVCacheService } from '../utils/kvStore.js';
-import { blacklistToken, getUserPermissions } from '../middleware/auth.js';
+import { blacklistToken } from '../middleware/auth.js';
+import { getUserPermissions } from '../middleware/rbac.js';
+import { AuthService } from '../services/authService.js';
 import { generateSecureToken, hashPassword, verifyPassword } from '../utils/encryption.js';
 
 export class AuthController {
@@ -19,172 +21,19 @@ export class AuthController {
   async login(c) {
     try {
       const { email, password, remember_me = false } = await c.req.json();
-      const db = new DatabaseService(c.env.DB);
-      const cache = new KVCacheService(c.env);
+      const ipAddress = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown';
+      const userAgent = c.req.header('user-agent') || 'unknown';
       
-      // Find user by email
-      const user = await db.first({
-        sql: `
-          SELECT id, email, password_hash, first_name, last_name, role, 
-                 is_active, is_verified, failed_login_attempts, locked_until,
-                 two_factor_enabled, two_factor_secret, last_login,
-                 total_points, current_level, avatar_url, department
-          FROM users 
-          WHERE email = ? AND deleted_at IS NULL
-        `,
-        args: [email.toLowerCase()]
-      });
+      const authService = new AuthService(c.env);
+      const result = await authService.login(email, password, remember_me, ipAddress, userAgent);
       
-      if (!user) {
-        return c.json({
-          error: 'Authentication failed',
-          message: 'Invalid email or password'
-        }, 401);
+      if (!result.success) {
+        return c.json({ error: result.error, message: result.message, ...result }, result.status);
       }
-      
-      // Check if account is locked
-      if (user.locked_until && new Date(user.locked_until) > new Date()) {
-        const unlockTime = new Date(user.locked_until);
-        return c.json({
-          error: 'Account locked',
-          message: 'Account is temporarily locked due to multiple failed login attempts',
-          unlock_time: unlockTime.toISOString()
-        }, 423);
-      }
-      
-      // Check if account is active
-      if (!user.is_active) {
-        return c.json({
-          error: 'Account disabled',
-          message: 'Your account has been deactivated'
-        }, 403);
-      }
-      
-      // Verify password
-      const isValidPassword = await verifyPassword(password, user.password_hash);
-      
-      if (!isValidPassword) {
-        // Increment failed login attempts
-        const failedAttempts = (user.failed_login_attempts || 0) + 1;
-        const lockUntil = failedAttempts >= 5 ? 
-          new Date(Date.now() + 30 * 60 * 1000).toISOString() : // Lock for 30 minutes
-          null;
-        
-        await db.execute({
-          sql: `
-            UPDATE users 
-            SET failed_login_attempts = ?, 
-                locked_until = ?,
-                updated_at = datetime('now')
-            WHERE id = ?
-          `,
-          args: [failedAttempts, lockUntil, user.id]
-        });
-        
-        return c.json({
-          error: 'Authentication failed',
-          message: 'Invalid email or password',
-          attempts_remaining: Math.max(0, 5 - failedAttempts)
-        }, 401);
-      }
-      
-      // Check if email is verified
-      if (!user.is_verified) {
-        return c.json({
-          error: 'Email not verified',
-          message: 'Please verify your email address before logging in',
-          user_id: user.id
-        }, 403);
-      }
-      
-      // Handle two-factor authentication
-      if (user.two_factor_enabled) {
-        // Generate temporary token for 2FA
-        const tempToken = generateSecureToken();
-        await cache.set(`2fa:${tempToken}`, user.id, 300); // 5 minutes
-        
-        return c.json({
-          requires_2fa: true,
-          temp_token: tempToken,
-          message: 'Please provide your two-factor authentication code'
-        });
-      }
-      
-      // Reset failed login attempts on successful login
-      await db.execute({
-        sql: `
-          UPDATE users 
-          SET failed_login_attempts = 0, 
-              locked_until = NULL,
-              last_login = datetime('now'),
-              updated_at = datetime('now')
-          WHERE id = ?
-        `,
-        args: [user.id]
-      });
-      
-      // Generate JWT token
-      const tokenExpiry = remember_me ? '30d' : '24h';
-      const token = jwt.sign(
-        { 
-          userId: user.id, 
-          email: user.email, 
-          role: user.role,
-          orgId: user.organization_id,
-          sessionId: crypto.randomUUID()
-        },
-        c.env.JWT_SECRET,
-        { expiresIn: tokenExpiry }
-      );
-      
-      // Store session info in cache
-      const sessionData = {
-        userId: user.id,
-        email: user.email,
-        role: user.role,
-        orgId: user.organization_id,
-        loginTime: new Date().toISOString(),
-        userAgent: c.req.header('User-Agent') || 'Unknown',
-        ipAddress: c.req.header('CF-Connecting-IP') || 'Unknown'
-      };
-      
-      await cache.set(`session:${user.id}:${token}`, sessionData, remember_me ? 2592000 : 86400);
-      
-      // Log login event
-      await this.logLoginEvent(db, user.id, 'login_success', sessionData);
-      
-      // Prepare user response
-      const userResponse = {
-        id: user.id,
-        email: user.email,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        displayName: `${user.first_name} ${user.last_name}`,
-        role: user.role,
-        isActive: user.is_active,
-        isVerified: user.is_verified,
-        avatarUrl: user.avatar_url,
-        department: user.department,
-        totalPoints: user.total_points || 0,
-        currentLevel: user.current_level || 1,
-        lastLogin: user.last_login,
-        permissions: getUserPermissions(user)
-      };
-      
-      return c.json({
-        success: true,
-        message: 'Login successful',
-        token,
-        user: userResponse,
-        expires_in: remember_me ? 2592000 : 86400 // seconds
-      });
-      
+      return c.json(result);
     } catch (error) {
       console.error('Login error:', error);
-      return c.json({
-        error: 'Internal server error',
-        message: 'An error occurred during login'
-      }, 500);
+      return c.json({ error: 'Internal server error', message: 'An error occurred during login' }, 500);
     }
   }
 
@@ -194,99 +43,23 @@ export class AuthController {
   async register(c) {
     try {
       const currentUser = c.get('user');
-      
-      // Check if current user is admin
       if (currentUser.role !== 'admin') {
-        return c.json({
-          error: 'Forbidden',
-          message: 'Only administrators can register new users'
-        }, 403);
+        return c.json({ error: 'Forbidden', message: 'Only administrators can register new users' }, 403);
       }
       
-      const { email, password, first_name, last_name, role = 'staff', phone } = await c.req.json();
-      const db = new DatabaseService(c.env.DB);
+      const userData = await c.req.json();
+      const frontendUrl = c.env.FRONTEND_URL || 'https://pos.mmnext.net';
       
-      // Check if user already exists
-      const existingUser = await db.first({
-        sql: 'SELECT id FROM users WHERE email = ? AND deleted_at IS NULL',
-        args: [email.toLowerCase()]
-      });
+      const authService = new AuthService(c.env);
+      const result = await authService.register(userData, currentUser, frontendUrl);
       
-      if (existingUser) {
-        return c.json({
-          error: 'User exists',
-          message: 'A user with this email address already exists'
-        }, 409);
+      if (!result.success) {
+        return c.json({ error: result.error, message: result.message }, result.status);
       }
-      
-      // Validate role
-      const validRoles = ['admin', 'cashier', 'staff'];
-      if (!validRoles.includes(role)) {
-        return c.json({
-          error: 'Invalid role',
-          message: 'Role must be one of: admin, cashier, staff'
-        }, 400);
-      }
-      
-      // Hash password
-      const passwordHash = await hashPassword(password);
-      
-      // Generate employee ID
-      const employeeId = `EMP${Date.now().toString().slice(-6)}`;
-      
-      // Create user
-      const result = await db.insert('users', {
-        email: email.toLowerCase(),
-        password_hash: passwordHash,
-        first_name,
-        last_name,
-        role,
-        phone,
-        employee_id: employeeId,
-        is_active: true,
-        is_verified: false,
-        hire_date: new Date().toISOString().split('T')[0],
-        created_by: currentUser.id
-      });
-      
-      // Send welcome email via Background Queue
-      try {
-        await c.env.EMAIL_QUEUE.send({
-          type: 'welcome_email',
-          email: email.toLowerCase(),
-          payload: {
-            firstName: first_name,
-            lastName: last_name,
-            employeeId,
-            role,
-            tempPassword: password
-          }
-        });
-      } catch (queueError) {
-        console.error('Failed to queue welcome email:', queueError);
-      }
-      
-      return c.json({
-        success: true,
-        message: 'User registered successfully',
-        user: {
-          id: result.insertId,
-          email: email.toLowerCase(),
-          firstName: first_name,
-          lastName: last_name,
-          role,
-          employeeId,
-          isActive: true,
-          isVerified: false
-        }
-      }, 201);
-      
+      return c.json(result, 201);
     } catch (error) {
       console.error('Registration error:', error);
-      return c.json({
-        error: 'Internal server error',
-        message: 'An error occurred during registration'
-      }, 500);
+      return c.json({ error: 'Internal server error', message: 'An error occurred during registration' }, 500);
     }
   }
 
@@ -336,8 +109,17 @@ export class AuthController {
       const cache = new KVCacheService(c.env);
       const db = new DatabaseService(c.env.DB);
       
-      // This would require storing all user sessions
-      // For now, we'll just increment a user version that invalidates all tokens
+      // Invalidate all user sessions
+      await db.execute({
+        sql: `
+          UPDATE user_sessions 
+          SET is_active = 0
+          WHERE user_id = ?
+        `,
+        args: [user.id]
+      });
+
+      // Update users table timestamp
       await db.execute({
         sql: `
           UPDATE users 
@@ -430,7 +212,7 @@ export class AuthController {
           createdAt: profile.created_at,
           
           // Permissions
-          permissions: getUserPermissions(profile)
+          permissions: getUserPermissions(profile.role)
         }
       });
       
@@ -586,64 +368,97 @@ export class AuthController {
   async forgotPassword(c) {
     try {
       const { email } = await c.req.json();
-      const db = new DatabaseService(c.env.DB);
+      const frontendUrl = c.env.FRONTEND_URL || 'https://pos.mmnext.net';
       
-      // Find user by email
-      const user = await db.first({
-        sql: 'SELECT id, email, first_name, last_name FROM users WHERE email = ? AND deleted_at IS NULL',
-        args: [email.toLowerCase()]
-      });
+      const authService = new AuthService(c.env);
+      const result = await authService.forgotPassword(email, frontendUrl);
       
-      if (!user) {
-        // Don't reveal if email exists or not
-        return c.json({
-          success: true,
-          message: 'If an account with that email exists, a password reset link has been sent'
-        });
-      }
-      
-      // Generate reset token
-      const resetToken = generateSecureToken();
-      const resetExpires = new Date(Date.now() + 3600000).toISOString(); // 1 hour
-      
-      // Save reset token
-      await db.execute({
-        sql: `
-          UPDATE users 
-          SET password_reset_token = ?, 
-              password_reset_expires = ?,
-              updated_at = datetime('now')
-          WHERE id = ?
-        `,
-        args: [resetToken, resetExpires, user.id]
-      });
-      
-      // Send reset email via Background Queue
-      try {
-        await c.env.EMAIL_QUEUE.send({
-          type: 'password_reset',
-          email: user.email,
-          payload: {
-            firstName: user.first_name,
-            resetToken,
-            resetUrl: `${c.env.FRONTEND_URL}/reset-password?token=${resetToken}`
-          }
-        });
-      } catch (queueError) {
-        console.error('Failed to queue reset email:', queueError);
-      }
-      
-      return c.json({
-        success: true,
-        message: 'If an account with that email exists, a password reset link has been sent'
-      });
-      
+      return c.json(result);
     } catch (error) {
       console.error('Forgot password error:', error);
-      return c.json({
-        error: 'Internal server error',
-        message: 'An error occurred while processing password reset request'
-      }, 500);
+      return c.json({ error: 'Internal server error', message: 'An error occurred processing the request' }, 500);
+    }
+  }
+
+  /**
+   * Reset Password
+   */
+  async resetPassword(c) {
+    try {
+      const { token, new_password } = await c.req.json();
+      
+      if (new_password.length < 8) {
+        return c.json({ error: 'Invalid password', message: 'Password must be at least 8 characters long' }, 400);
+      }
+      
+      const authService = new AuthService(c.env);
+      const result = await authService.resetPassword(token, new_password);
+      
+      if (!result.success) {
+        return c.json({ error: result.error, message: result.message }, result.status);
+      }
+      return c.json(result);
+    } catch (error) {
+      console.error('Reset password error:', error);
+      return c.json({ error: 'Internal server error', message: 'An error occurred resetting the password' }, 500);
+    }
+  }
+
+  /**
+   * Verify Email
+   */
+  async verifyEmail(c) {
+    try {
+      const { token } = await c.req.json();
+      
+      const authService = new AuthService(c.env);
+      const result = await authService.verifyEmail(token);
+      
+      if (!result.success) {
+        return c.json({ error: result.error, message: result.message }, result.status);
+      }
+      return c.json(result);
+    } catch (error) {
+      console.error('Email verification error:', error);
+      return c.json({ error: 'Internal server error', message: 'An error occurred verifying the email' }, 500);
+    }
+  }
+
+  /**
+   * Verify 2FA and Login
+   */
+  async verify2fa(c) {
+    try {
+      const { temp_token, code, remember_me = false } = await c.req.json();
+      const ipAddress = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown';
+      const userAgent = c.req.header('user-agent') || 'unknown';
+      
+      const authService = new AuthService(c.env);
+      const result = await authService.verify2FA(temp_token, code, remember_me, ipAddress, userAgent);
+      
+      if (!result.success) {
+        return c.json({ error: result.error, message: result.message }, result.status);
+      }
+      return c.json(result);
+    } catch (error) {
+      console.error('2FA verification error:', error);
+      return c.json({ error: 'Internal server error', message: 'An error occurred during 2FA verification' }, 500);
+    }
+  }
+
+  /**
+   * Setup 2FA
+   */
+  async setup2FA(c) {
+    try {
+      const user = c.get('user');
+      const authService = new AuthService(c.env);
+      const result = await authService.setup2FA(user.id, user.email);
+      
+      return c.json(result);
+    } catch (error) {
+      console.error('Setup 2FA error:', error);
+      return c.json({ error: 'Internal server error', message: 'An error occurred setting up 2FA' }, 500);
     }
   }
 
@@ -653,7 +468,7 @@ export class AuthController {
   async getPermissions(c) {
     try {
       const user = c.get('user');
-      const permissions = getUserPermissions(user);
+      const permissions = getUserPermissions(user.role);
       
       return c.json({
         success: true,

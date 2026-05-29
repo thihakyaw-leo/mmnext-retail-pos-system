@@ -24,7 +24,8 @@ INSERT INTO stores (organization_id, name, code, address, city, manager_id, open
 
 -- Super Admin
 INSERT INTO users (organization_id, store_id, username, email, password_hash, first_name, last_name, phone, role, employee_id, hire_date, settings) VALUES 
-(1, 1, 'admin', 'admin@pos.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LgBz5AhQ7cXJZqBXK', 'Admin', 'User', '+84-901-234-567', 'super_admin', 'EMP001', '2024-01-01', '{"theme":"dark","notifications":true}');
+(1, 1, 'admin', 'admin@pos.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LgBz5AhQ7cXJZqBXK', 'Admin', 'User', '+84-901-234-567', 'super_admin', 'EMP001', '2024-01-01', '{"theme":"dark","notifications":true}'),
+(1, 1, 'thihakyaw', 'thihakyaw.dtr@gmail.com', '$2b$12$VL22imPeBsB9EsEaP24ZzuvlKswhpKdXSIoSWlXSMN1tYOuYuUT66', 'Thiha', 'Kyaw', '+84-901-234-999', 'super_admin', 'EMP999', '2024-05-28', '{"theme":"dark","notifications":true}');
 
 -- Store Managers
 INSERT INTO users (organization_id, store_id, username, email, password_hash, first_name, last_name, phone, role, employee_id, hire_date, salary, settings) VALUES 

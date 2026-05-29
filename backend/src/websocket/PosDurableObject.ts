@@ -15,6 +15,21 @@ export class PosDurableObject extends DurableObject<Env> {
 
   async fetch(request: Request): Promise<Response> {
     const upgradeHeader = request.headers.get('Upgrade');
+    
+    // Internal API for broadcasting from other workers/routes
+    if (request.method === 'POST' && new URL(request.url).pathname === '/internal/broadcast') {
+      try {
+        const payload = await request.json();
+        this.broadcast(payload);
+        return new Response(JSON.stringify({ success: true }), { 
+          status: 200, 
+          headers: { 'Content-Type': 'application/json' } 
+        });
+      } catch (err: any) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 400 });
+      }
+    }
+
     if (!upgradeHeader || upgradeHeader !== 'websocket') {
       return new Response('Expected Upgrade: websocket', { status: 426 });
     }

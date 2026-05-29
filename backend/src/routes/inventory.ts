@@ -1,21 +1,29 @@
-import { Hono } from 'hono';
-import { InventoryController } from '../controllers/inventoryController.js';
+import { Hono, Context, Next } from 'hono';
 import { Bindings } from '../types/env.js';
-import { authMiddleware } from '../middleware/auth.js';
-import { rbacMiddleware } from '../middleware/rbac.js';
+import { InventoryController } from '../controllers/inventoryController.js';
+import { authMiddleware, hasRolePermission } from '../middleware/auth.js';
 
 const inventoryRoutes = new Hono<Bindings>();
-const inventoryController = new InventoryController();
 
-// Use authentication for all inventory routes
-// (Actually already applied globally in index.ts for protectedApi, but doing it here just to be explicit or if we change mounts later)
-// Wait, since protectedApi handles auth, we'll just define the route.
+// Apply Auth Middleware
+inventoryRoutes.use('*', authMiddleware);
 
-// We will add RBAC to ensure only managers or admins can bulk update stock
-inventoryRoutes.post(
-  '/bulk-update', 
-  rbacMiddleware(['admin', 'manager']), 
-  (c) => inventoryController.bulkUpdateStock(c)
-);
+// Hono compatible Role Middleware
+const checkRole = (allowedRoles: string[]) => async (c: Context<Bindings>, next: Next) => {
+  const user = c.get('user') as any;
+  const hasAccess = allowedRoles.some(role => hasRolePermission(user?.role, role));
+  if (!user || !hasAccess) {
+    return c.json({ error: 'Insufficient permissions' }, 403);
+  }
+  await next();
+};
+
+// ==========================================
+// ROUTES
+// ==========================================
+
+inventoryRoutes.get('/', checkRole(['admin', 'manager', 'cashier']), InventoryController.getInventory);
+inventoryRoutes.get('/logs', checkRole(['admin', 'manager']), InventoryController.getInventoryLogs);
+inventoryRoutes.post('/update', checkRole(['admin', 'manager']), InventoryController.updateInventoryLevel);
 
 export default inventoryRoutes;

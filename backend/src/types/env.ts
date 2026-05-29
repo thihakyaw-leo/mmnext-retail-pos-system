@@ -32,6 +32,7 @@ export type Variables = {
   requestId: string;
   startTime: number;
   user?: any; // To be typed later when Auth is fully migrated
+  orgId?: string;
 };
 
 // Hono bindings wrapper

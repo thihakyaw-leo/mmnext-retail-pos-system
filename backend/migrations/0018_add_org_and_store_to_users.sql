@@ -1,0 +1,4 @@
+ALTER TABLE users ADD COLUMN organization_id INTEGER;
+ALTER TABLE users ADD COLUMN store_id INTEGER;
+ALTER TABLE users ADD COLUMN username TEXT;
+ALTER TABLE users ADD COLUMN settings JSON;

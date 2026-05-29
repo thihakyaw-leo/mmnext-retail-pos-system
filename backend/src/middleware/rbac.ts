@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 /**
  * Role-Based Access Control (RBAC) Middleware
  * Provides fine-grained permissions for different user roles
@@ -360,7 +360,7 @@ const ROLES = {
         )
         VALUES (?, ?, ?, ?, ?, datetime('now'))
       `).bind(
-        userId,
+        userId || null,
         'access_denied',
         'rbac',
         null,

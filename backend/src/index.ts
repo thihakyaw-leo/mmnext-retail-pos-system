@@ -7,7 +7,7 @@
  */
 
 import { Hono } from 'hono';
-import { cors } from 'hono/cors';
+import { corsMiddleware } from './middleware/cors.js';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { secureHeaders } from 'hono/secure-headers';
@@ -23,12 +23,24 @@ import orderRoutes from './routes/orders.js';
 import customerRoutes from './routes/customers.js';
 import inventoryRoutes from './routes/inventory.js';
 import staffRoutes from './routes/staff.js';
+import supplierRoutes from './routes/suppliers.js';
+import purchasingRoutes from './routes/purchasing.js';
+import discountsRoutes from './routes/discounts.js';
 import analyticsRoutes from './routes/analytics.js';
 import gamificationRoutes from './routes/gamification.js';
 import reportRoutes from './routes/reports.js';
+import payrollRoutes from './routes/payroll.js';
+import shiftsRoutes from './routes/shifts.js';
+import promotionRoutes from './routes/promotions.js';
+import loyaltyRoutes from './routes/loyalty.js';
+import organizationRoutes from './routes/organization.js';
+import auditRoutes from './routes/audit.js';
 import integrationRoutes from './routes/integrations.js';
 import posRoutes from './routes/pos.js';
 import aiRoutes from './routes/ai.js';
+import mediaRoutes from './routes/media.js';
+import attendanceRoutes from './routes/attendance.js';
+import categoriesRoutes from './routes/categories.js';
 
 // Import middleware
 import { authMiddleware } from './middleware/auth.js';
@@ -56,46 +68,7 @@ app.use('*', secureHeaders());
 app.use('*', prettyJSON());
 
 // CORS configuration
-app.use('*', cors({
-  origin: (origin) => {
-    // Allow all origins in development
-    if (!origin) return '';
-    
-    // Production allowed origins
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'https://enterprise-pos-frontend.pages.dev',
-      'https://*.pages.dev' // Cloudflare Pages domains
-    ];
-    
-    const isAllowed = allowedOrigins.some(allowed => {
-      if (allowed.includes('*')) {
-        const pattern = allowed.replace('*', '.*');
-        return new RegExp(pattern).test(origin);
-      }
-      return allowed === origin;
-    });
-    return isAllowed ? origin : '';
-  },
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With',
-    'X-API-Key',
-    'X-Client-Version',
-    'X-Request-ID'
-  ],
-  exposeHeaders: [
-    'X-Total-Count',
-    'X-Page-Count',
-    'X-Rate-Limit-Remaining',
-    'X-Response-Time'
-  ],
-  credentials: true,
-  maxAge: 86400 // 24 hours
-}));
+app.use('*', corsMiddleware());
 
 // Global rate limiting
 app.use('*', rateLimitMiddleware);
@@ -129,8 +102,15 @@ app.get('/', (c) => {
       analytics: '/api/analytics',
       gamification: '/api/gamification',
       reports: '/api/reports',
+      payroll: '/api/payroll',
+      shifts: '/api/shifts',
+      promotions: '/api/promotions',
+      loyalty: '/api/loyalty',
+      organization: '/api/organization',
+      audit: '/api/audit',
       integrations: '/api/integrations',
-      pos: '/api/pos'
+      pos: '/api/pos',
+      attendance: '/api/attendance'
     }
   });
 });
@@ -171,6 +151,11 @@ app.get('/api', (c) => {
 app.route('/api/auth', authRoutes);
 
 /**
+ * Public Media streaming from R2
+ */
+app.route('/api/media', mediaRoutes);
+
+/**
  * Protected API routes
  */
 const protectedApi = new Hono<Bindings>();
@@ -183,13 +168,23 @@ protectedApi.route('/products', productRoutes);
 protectedApi.route('/orders', orderRoutes);
 protectedApi.route('/customers', customerRoutes);
 protectedApi.route('/inventory', inventoryRoutes);
+protectedApi.route('/suppliers', supplierRoutes);
+protectedApi.route('/purchasing', purchasingRoutes);
+protectedApi.route('/discounts', discountsRoutes);
 protectedApi.route('/staff', staffRoutes);
 protectedApi.route('/analytics', analyticsRoutes);
 protectedApi.route('/gamification', gamificationRoutes);
 protectedApi.route('/reports', reportRoutes);
+protectedApi.route('/payroll', payrollRoutes);
+protectedApi.route('/shifts', shiftsRoutes);
+protectedApi.route('/promotions', promotionRoutes);
+protectedApi.route('/loyalty', loyaltyRoutes);
+protectedApi.route('/organization', organizationRoutes);
+protectedApi.route('/audit', auditRoutes);
 protectedApi.route('/integrations', integrationRoutes);
 protectedApi.route('/pos', posRoutes);
 protectedApi.route('/ai', aiRoutes);
+protectedApi.route('/categories', categoriesRoutes);
 
 // Mount protected routes under /api
 app.route('/api', protectedApi);

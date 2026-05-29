@@ -4,7 +4,7 @@
 INSERT INTO users (email, password_hash, first_name, last_name, role, is_active, is_verified, department, position)
 VALUES (
     'admin@pos.com', 
-    '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 
+    '$2b$12$FQI0xlcc3OphOWwdX752Pu5zF6pzUdO0dQ9NwzYhaP8UTGEE.Xpmy', 
     'Admin', 
     'User', 
     'admin', 
@@ -12,6 +12,20 @@ VALUES (
     TRUE,
     'Management',
     'System Administrator'
+) ON CONFLICT(email) DO NOTHING;
+
+-- 1.5. Insert Super Admin User
+INSERT INTO users (email, password_hash, first_name, last_name, role, is_active, is_verified, department, position)
+VALUES (
+    'thihakyaw.dtr@gmail.com', 
+    '$2b$12$VL22imPeBsB9EsEaP24ZzuvlKswhpKdXSIoSWlXSMN1tYOuYuUT66', 
+    'Thiha', 
+    'Kyaw', 
+    'admin', 
+    TRUE, 
+    TRUE,
+    'Management',
+    'Super Administrator'
 ) ON CONFLICT(email) DO NOTHING;
 
 -- 2. Insert Categories

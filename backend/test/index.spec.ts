@@ -1,5 +1,6 @@
 /// <reference types="@cloudflare/vitest-pool-workers" />
-import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:vitest';
+/// <reference path="../src/env.d.ts" />
+import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
 import { describe, it, expect } from 'vitest';
 import worker from '../src/index.js';
 

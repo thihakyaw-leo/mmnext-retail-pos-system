@@ -1,10 +1,11 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 // backend/src/services/websocket.js
 // Enterprise POS System - WebSocket Service using Cloudflare Durable Objects
 // Real-time updates for orders, inventory, staff activities, and notifications
 
 import { Hono } from 'hono';
 import { DatabaseService } from './database.js';
+import jwt from '@tsndr/cloudflare-worker-jwt';
 
 // Durable Object for WebSocket connections
 export class WebSocketDO {
@@ -115,8 +116,10 @@ export class WebSocketDO {
 
   async verifyToken(token) {
     try {
-      // Decode JWT token (simplified - in production use proper JWT verification)
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isValid = await jwt.verify(token, this.env.JWT_SECRET);
+      if (!isValid) return null;
+      
+      const { payload } = jwt.decode(token);
       
       // Check if token is expired
       if (payload.exp && payload.exp < Date.now() / 1000) {
@@ -124,7 +127,9 @@ export class WebSocketDO {
       }
 
       // Get user details from database
-      const user = await this.db.findById('users', payload.sub);
+      // Token payload might use userId or sub
+      const userId = payload.userId || payload.sub;
+      const user = await this.db.findById('users', userId);
       return user;
     } catch (error) {
       console.error('Token verification error:', error);
